@@ -5,10 +5,19 @@
 	text-align: center;
 	grid-auto-rows: 1fr;
 	height: 90vh;
+	position: relative;
 }
 
 .grid > * {
 	overflow: auto;
+}
+
+.action {
+	background: red;
+	position: sticky;
+	left: 50%;
+	top: 0%;
+	overflow: hidden;
 }
 
 .do {

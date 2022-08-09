@@ -15,20 +15,25 @@ export default function Login(props: Props) {
 	}
 	async function login(e) {
 		e.preventDefault();
-		let res = await fetch("https://habitica.com/api/v3/tasks/user", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"x-api-key": apiKey,
-				"x-api-user": user,
-				"x-client": creator + "-" + project_name,
-			},
-		});
-		let data = await res.json();
-		if (!data.succes) {
-			return "wrong login";
+		try {
+			let res = await fetch("https://habitica.com/api/v3/tasks/user", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					"x-api-key": apiKey,
+					"x-api-user": user,
+					"x-client": creator + "-" + project_name,
+				},
+			});
+			let data = await res.json();
+			if (data.success) {
+				document.cookie = `api=${apiKey};`;
+				document.cookie = `user=${user};`;
+			}
+			props.login(true);
+		} catch (err) {
+			console.log(err + "logging in");
 		}
-		props.login(true);
 	}
 	return (
 		<div className="login-form">
