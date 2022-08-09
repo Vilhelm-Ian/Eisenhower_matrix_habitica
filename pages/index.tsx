@@ -46,8 +46,7 @@ const Home: NextPage = () => {
   }
 
   useEffect(() => {
-    if (apiKey !== undefined) {
-      generateMatrix();
+    if (important && urgent) {
       return;
     }
     let map = new Map();
@@ -65,7 +64,12 @@ const Home: NextPage = () => {
     if (!isLoggedIn && map.get("api")) {
       setLoggedIn(true);
     }
-  }, [isLoggedIn, apiKey, generateMatrix]);
+  }, [isLoggedIn, apiKey]);
+
+  useEffect(() => {
+    if (important == undefined && urgent == undefined) return;
+    generateMatrix();
+  }, [important, urgent]);
 
   async function getData() {
     try {
