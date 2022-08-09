@@ -7,19 +7,43 @@ import { useState, useEffect } from "react";
 
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const project_name = "EisenHower";
-const important = "72e05a5c-3e11-408d-a179-069aeeba7cce";
-const urgent = "7d6594e9-61bb-4fcf-834c-934dcef76b77";
 
 const Home: NextPage = () => {
   const [apiKey, setApiKey] = useState();
   const [user, setUser] = useState();
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [important, setImportant] = useState("");
+  const [urgent, setUrgent] = useState("");
+
   const [data, setData] = useState({
     _do: [],
     deligate: [],
     _delete: [],
     schedule: [],
   });
+
+  async function getTags(apiKey: string, user: string) {
+    try {
+      let res = await fetch("https://habitica.com/api/v3/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "x-api-user": user,
+          "x-client": creator + "-" + project_name,
+        },
+      });
+      let data = await res.json();
+      let tags = data.data.tags;
+      let important = tags.filter((tag) => tag.name == "important");
+      let urgent = tags.filter((tag) => tag.name == "urgent");
+      console.log({ important: important[0].id, id: urgent[0].id });
+      setImportant(important[0].id);
+      setUrgent(urgent[0].id);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     if (apiKey !== undefined) {
@@ -33,12 +57,15 @@ const Home: NextPage = () => {
     cookies
       .map((cookie) => cookie.split("="))
       .forEach(([key, value]) => map.set(key, value));
-    setApiKey(map.get("api"));
+    let api = map.get("api");
+    let user = map.get("user");
+    getTags(api, user);
+    setApiKey(api);
     setUser(map.get("user"));
     if (!isLoggedIn && map.get("api")) {
       setLoggedIn(true);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, apiKey, generateMatrix]);
 
   async function getData() {
     try {
@@ -58,25 +85,30 @@ const Home: NextPage = () => {
   }
 
   async function generateMatrix() {
-    let data = await getData();
-    let _do = [];
-    let schedule = [];
-    let deligate = [];
-    let _delete = [];
-    for (let i = 0; i < data.data.length; i++) {
-      if (data.data[i].completed) continue;
-      if (
-        data.data[i].tags.includes(important) &&
-        data.data[i].tags.includes(urgent)
-      ) {
-        _do.push(data.data[i]);
-        continue;
+    try {
+      let data = await getData();
+      console.log(data);
+      let _do = [];
+      let schedule = [];
+      let deligate = [];
+      let _delete = [];
+      for (let i = 0; i < data.data.length; i++) {
+        if (data.data[i].completed) continue;
+        if (
+          data.data[i].tags.includes(important) &&
+          data.data[i].tags.includes(urgent)
+        ) {
+          _do.push(data.data[i]);
+          continue;
+        }
+        if (data.data[i].tags.includes(important)) schedule.push(data.data[i]);
+        if (data.data[i].tags.includes(urgent)) deligate.push(data.data[i]);
+        _delete.push(data.data[i]);
       }
-      if (data.data[i].tags.includes(important)) schedule.push(data.data[i]);
-      if (data.data[i].tags.includes(urgent)) deligate.push(data.data[i]);
-      _delete.push(data.data[i]);
+      setData({ _do, schedule, deligate, _delete });
+    } catch (err) {
+      console.log(err);
     }
-    setData({ _do, schedule, deligate, _delete });
   }
 
   return (
