@@ -60,7 +60,10 @@ const Home: NextPage = () => {
   async function generateMatrix() {
     let data = await getData();
     console.log(data);
-    let [_do, schedule, deligate, _delete] = Array(4).fill([]);
+    let _do = [];
+    let schedule = [];
+    let deligate = [];
+    let _delete = [];
     for (let i = 0; i < data.data.length; i++) {
       if (data.data[i].completed) continue;
       if (
