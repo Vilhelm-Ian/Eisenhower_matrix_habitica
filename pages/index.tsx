@@ -1,19 +1,18 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import Login from "../components/Login";
 import EisenHower from "../components/EisenHower";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const api = "74473d42-ab75-4668-b3a2-526d1cb1a654";
-const user = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const project_name = "EisenHower";
 const important = "72e05a5c-3e11-408d-a179-069aeeba7cce";
 const urgent = "7d6594e9-61bb-4fcf-834c-934dcef76b77";
 
 const Home: NextPage = () => {
+  const [apiKey, setApiKey] = useState();
+  const [user, setUser] = useState();
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [data, setData] = useState({
     _do: [],
@@ -21,13 +20,33 @@ const Home: NextPage = () => {
     _delete: [],
     schedule: [],
   });
+
+  useEffect(() => {
+    if (apiKey !== undefined) {
+      generateMatrix();
+      return;
+    }
+    let map = new Map();
+    let cookie = document.cookie;
+    cookie = cookie.replaceAll(";", "");
+    let cookies = cookie.split(" ");
+    cookies
+      .map((cookie) => cookie.split("="))
+      .forEach(([key, value]) => map.set(key, value));
+    setApiKey(map.get("api"));
+    setUser(map.get("user"));
+    if (!isLoggedIn && map.get("api")) {
+      setLoggedIn(true);
+    }
+  }, [isLoggedIn]);
+
   async function getData() {
     try {
       let res = await fetch("https://habitica.com/api/v3/tasks/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": api,
+          "x-api-key": apiKey,
           "x-api-user": user,
           "x-client": creator + "-" + project_name,
         },
@@ -40,6 +59,7 @@ const Home: NextPage = () => {
 
   async function generateMatrix() {
     let data = await getData();
+    console.log(data);
     let [_do, schedule, deligate, _delete] = Array(4).fill([]);
     for (let i = 0; i < data.data.length; i++) {
       if (data.data[i].completed) continue;
@@ -65,12 +85,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <button onClick={getData}>get Data</button>
-        <button onClick={generateMatrix}>get Data</button>
         {isLoggedIn ? (
           <EisenHower grid_data={data}></EisenHower>
         ) : (
-          <Login></Login>
+          <Login login={setLoggedIn}></Login>
         )}
       </main>
     </div>
