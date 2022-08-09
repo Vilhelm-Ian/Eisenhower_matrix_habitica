@@ -8,7 +8,7 @@ interface Props {
 }
 
 function put_task_tex_in_tag(tasks: any): string[] {
-	return tasks?.map((task) => <p key={task.text}>{task.text}</p>);
+	return tasks?.map((task) => <li key={task.text}>{task.text}</li>);
 }
 
 export default function EisenHower(props: Props) {
@@ -23,25 +23,25 @@ export default function EisenHower(props: Props) {
 				<div className="action do ">
 					<h2>Do</h2>
 				</div>
-				{_do}
+				<ul>{_do}</ul>
 			</div>
 			<div className="schedule">
 				<div className="action schedule">
 					<h2>Schedule</h2>
 				</div>
-				{schedule}
+				<ul>{schedule}</ul>
 			</div>
 			<div className="deligate">
 				<div className="action deligate">
 					<h2>deligate</h2>
 				</div>
-				{deligate}
+				<ul>{deligate}</ul>
 			</div>
 			<div className="delete">
 				<div className="action delete">
 					<h2>delete</h2>
 				</div>
-				{_delete}
+				<ul>{_delete}</ul>
 			</div>
 		</div>
 	);
