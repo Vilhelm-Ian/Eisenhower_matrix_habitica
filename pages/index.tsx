@@ -6,8 +6,36 @@ import Login from "../components/Login";
 import EisenHower from "../components/EisenHower";
 import { useState } from "react";
 
+interface ToDo {
+  name: string;
+  important: boolean;
+  urgent: boolean;
+}
+
+const api = "";
+const user = "";
+const creator = "";
+const project_name = "EisenHower";
+
 const Home: NextPage = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  async function getData() {
+    let res = await fetch("https://habitica.com/api/v3/tasks/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": api,
+        "x-api-user": user,
+        "x-client": creator + "-" + project_name,
+      },
+    });
+    let data = await res.json();
+    let result = data.filter(
+      (data) => data.tags.includes("urgent") || data.includes("important")
+    );
+    return result;
+    i;
+  }
   return (
     <div className={styles.container}>
       <Head>
