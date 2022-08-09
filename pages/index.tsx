@@ -59,7 +59,6 @@ const Home: NextPage = () => {
 
   async function generateMatrix() {
     let data = await getData();
-    console.log(data);
     let _do = [];
     let schedule = [];
     let deligate = [];
@@ -91,7 +90,12 @@ const Home: NextPage = () => {
         {isLoggedIn ? (
           <EisenHower grid_data={data}></EisenHower>
         ) : (
-          <Login login={setLoggedIn}></Login>
+          <Login
+            setApiKey={setApiKey}
+            setUser={setUser}
+            generateMatrix={generateMatrix}
+            login={setLoggedIn}
+          ></Login>
         )}
       </main>
     </div>

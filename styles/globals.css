@@ -27,6 +27,10 @@ main {
 	overflow: hidden;
 }
 
+h2 {
+	text-transform: uppercase;
+}
+
 .do {
 	background: green;
 }
@@ -47,5 +51,35 @@ main {
 	position: absolute;
 	top: 50%;
 	left: 50%;
+	position: relative;
 	transform: translate(-50%, -50%);
+	padding: 2em;
+	border-radius: 0.5rem;
+	background: white;
+	text-align: center;
+	max-width: 550px;
+	box-shadow: 1rem 1rem;
+}
+
+input {
+	border: none;
+	border-bottom: solid 0.1rem gray;
+	border-radius: 0.5rem;
+	min-height: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+input:focus,
+textarea:focus {
+	outline: none;
+}
+
+button {
+	border-radius: 0.5rem;
+	background-image: linear-gradient(to bottom right, purple, pink);
+	border: none;
+	font-size: 1rem;
+	padding: 1rem;
+	font-weight: 700;
+	color: white;
 }
