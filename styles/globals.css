@@ -1,19 +1,26 @@
+html,
+body {
+	margin: 0;
+	background-image: linear-gradient(to bottom right, purple, pink);
+}
 .grid {
 	display: grid;
 	color: white;
 	grid-template-columns: 1fr 1fr;
 	text-align: center;
 	grid-auto-rows: 1fr;
-	height: 90vh;
+	height: 100vh;
 	position: relative;
 }
-
+main {
+	position: relative;
+	height: 100vh;
+}
 .grid > * {
 	overflow: auto;
 }
 
 .action {
-	background: red;
 	position: sticky;
 	left: 50%;
 	top: 0%;
@@ -31,4 +38,14 @@
 }
 .delete {
 	background: red;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
