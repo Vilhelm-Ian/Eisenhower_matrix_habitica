@@ -7,7 +7,6 @@ body {
 	display: grid;
 	color: white;
 	grid-template-columns: 1fr 1fr;
-	text-align: center;
 	grid-auto-rows: 1fr;
 	height: 100vh;
 	position: relative;
@@ -21,6 +20,7 @@ main {
 }
 
 .action {
+	text-align: center;
 	position: sticky;
 	left: 50%;
 	top: 0%;
