@@ -16,8 +16,8 @@ interface Squares {
 }
 
 const Home: NextPage = () => {
-  const [apiKey, setApiKey] = useState();
-  const [user, setUser] = useState();
+  const [apiKey, setApiKey] = useState("");
+  const [user, setUser] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [important, setImportant] = useState("");
   const [urgent, setUrgent] = useState("");
@@ -42,8 +42,8 @@ const Home: NextPage = () => {
       });
       let data = await res.json();
       let tags = data.data.tags;
-      let important = tags.filter((tag) => tag.name == "important");
-      let urgent = tags.filter((tag) => tag.name == "urgent");
+      let important = tags.filter((tag: any) => tag.name == "important");
+      let urgent = tags.filter((tag: any) => tag.name == "urgent");
       console.log({ important: important[0].id, id: urgent[0].id });
       setImportant(important[0].id);
       setUrgent(urgent[0].id);

@@ -3,6 +3,7 @@ import { useState } from "react";
 interface Props {
 	login(isLoggedIn: boolean): void;
 	setUser(user: string): void;
+	generateMatrix(apiKey: string): void;
 	setApiKey(apiKey: string): void;
 }
 
