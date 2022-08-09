@@ -8,6 +8,13 @@ import { useState, useEffect } from "react";
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const project_name = "EisenHower";
 
+interface Squares {
+  _do: string[];
+  deligate: string[];
+  _delete: string[];
+  schedule: string[];
+}
+
 const Home: NextPage = () => {
   const [apiKey, setApiKey] = useState();
   const [user, setUser] = useState();
@@ -91,28 +98,29 @@ const Home: NextPage = () => {
   async function generateMatrix() {
     try {
       let data = await getData();
-      console.log(data);
-      let _do = [];
-      let schedule = [];
-      let deligate = [];
-      let _delete = [];
+      let squares = {
+        _do: [],
+        schedule: [],
+        deligate: [],
+        _delete: [],
+      };
       for (let i = 0; i < data.data.length; i++) {
         if (data.data[i].completed) continue;
-        if (
-          data.data[i].tags.includes(important) &&
-          data.data[i].tags.includes(urgent)
-        ) {
-          _do.push(data.data[i]);
-          continue;
-        }
-        if (data.data[i].tags.includes(important)) schedule.push(data.data[i]);
-        if (data.data[i].tags.includes(urgent)) deligate.push(data.data[i]);
-        _delete.push(data.data[i]);
+        place_task_in_appropriate_square(squares, data.data[i]);
       }
-      setData({ _do, schedule, deligate, _delete });
+      setData(squares);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function place_task_in_appropriate_square(squares: any, task: any) {
+    let isImporant = task.tags.includes(important);
+    let isUrgent = task.tags.includes(urgent);
+    if (isImporant && isUrgent) return squares._do.push(task);
+    if (isImporant) return squares.schedule.push(task);
+    if (isUrgent) return squares.deligate.push(task);
+    squares._delete.push(task);
   }
 
   return (
