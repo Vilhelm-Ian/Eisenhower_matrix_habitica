@@ -1,9 +1,7 @@
 import { useState } from "react";
 
 interface Props {
-	login(isLoggedIn: boolean): void;
 	setUser(user: string): void;
-	generateMatrix(apiKey: string): void;
 	setApiKey(apiKey: string): void;
 }
 
@@ -37,7 +35,6 @@ export default function Login(props: Props) {
 			}
 			props.setUser(user);
 			props.setApiKey(apiKey);
-			props.login(true);
 		} catch (err) {
 			console.log(err + "logging in");
 		}

@@ -5,22 +5,10 @@ import Login from "../components/Login";
 import EisenHower from "../components/EisenHower";
 import { useState, useEffect } from "react";
 
-const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
-const project_name = "EisenHower";
-
-interface Squares {
-  _do: string[];
-  deligate: string[];
-  _delete: string[];
-  schedule: string[];
-}
-
 const Home: NextPage = () => {
   const [apiKey, setApiKey] = useState("");
   const [user, setUser] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [important, setImportant] = useState("");
-  const [urgent, setUrgent] = useState("");
 
   const [data, setData] = useState({
     _do: [],
@@ -29,33 +17,7 @@ const Home: NextPage = () => {
     schedule: [],
   });
 
-  async function getTags(apiKey: string, user: string) {
-    try {
-      let res = await fetch("https://habitica.com/api/v3/user", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "x-api-user": user,
-          "x-client": creator + "-" + project_name,
-        },
-      });
-      let data = await res.json();
-      let tags = data.data.tags;
-      let important = tags.filter((tag: any) => tag.name == "important");
-      let urgent = tags.filter((tag: any) => tag.name == "urgent");
-      console.log({ important: important[0].id, id: urgent[0].id });
-      setImportant(important[0].id);
-      setUrgent(urgent[0].id);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    if (important && urgent) {
-      return;
-    }
+  function getCookies(): [string, string] {
     let map = new Map();
     let cookie = document.cookie;
     cookie = cookie.replaceAll(";", "");
@@ -65,63 +27,19 @@ const Home: NextPage = () => {
       .forEach(([key, value]) => map.set(key, value));
     let api = map.get("api");
     let user = map.get("user");
-    getTags(api, user);
+    return [api, user];
+  }
+
+  useEffect(() => {
+    if (isLoggedIn) return;
+    let [api, user] = getCookies();
+    console.log("index.tsx");
     setApiKey(api);
-    setUser(map.get("user"));
-    if (!isLoggedIn && map.get("api")) {
+    setUser(user);
+    if (!isLoggedIn && api && user) {
       setLoggedIn(true);
     }
   }, [isLoggedIn, apiKey]);
-
-  useEffect(() => {
-    if (important == undefined && urgent == undefined) return;
-    generateMatrix();
-  }, [important, urgent]);
-
-  async function getData() {
-    try {
-      let res = await fetch("https://habitica.com/api/v3/tasks/user", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "x-api-user": user,
-          "x-client": creator + "-" + project_name,
-        },
-      });
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function generateMatrix() {
-    try {
-      let data = await getData();
-      let squares = {
-        _do: [],
-        schedule: [],
-        deligate: [],
-        _delete: [],
-      };
-      for (let i = 0; i < data.data.length; i++) {
-        if (data.data[i].completed) continue;
-        place_task_in_appropriate_square(squares, data.data[i]);
-      }
-      setData(squares);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  function place_task_in_appropriate_square(squares: any, task: any) {
-    let isImporant = task.tags.includes(important);
-    let isUrgent = task.tags.includes(urgent);
-    if (isImporant && isUrgent) return squares._do.push(task);
-    if (isImporant) return squares.schedule.push(task);
-    if (isUrgent) return squares.deligate.push(task);
-    squares._delete.push(task);
-  }
 
   return (
     <div>
@@ -132,14 +50,9 @@ const Home: NextPage = () => {
       </Head>
       <main>
         {isLoggedIn ? (
-          <EisenHower grid_data={data}></EisenHower>
+          <EisenHower apiKey={apiKey} user={user}></EisenHower>
         ) : (
-          <Login
-            setApiKey={setApiKey}
-            setUser={setUser}
-            generateMatrix={generateMatrix}
-            login={setLoggedIn}
-          ></Login>
+          <Login setApiKey={setApiKey} setUser={setUser}></Login>
         )}
       </main>
     </div>
