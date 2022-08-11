@@ -3,6 +3,7 @@ import { useState } from "react";
 interface Props {
 	setUser(user: string): void;
 	setApiKey(apiKey: string): void;
+	setLoggedIn(loggedin: boolean): void;
 }
 
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
@@ -29,12 +30,12 @@ export default function Login(props: Props) {
 				},
 			});
 			let data = await res.json();
-			if (data.success) {
-				document.cookie = `api=${apiKey};`;
-				document.cookie = `user=${user};`;
-			}
+			if (!data.success) return;
+			document.cookie = `api=${apiKey};`;
+			document.cookie = `user=${user};`;
 			props.setUser(user);
 			props.setApiKey(apiKey);
+			props.setLoggedIn(true);
 		} catch (err) {
 			console.log(err + "logging in");
 		}

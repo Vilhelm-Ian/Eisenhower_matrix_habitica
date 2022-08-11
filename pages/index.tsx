@@ -52,7 +52,11 @@ const Home: NextPage = () => {
         {isLoggedIn ? (
           <EisenHower apiKey={apiKey} user={user}></EisenHower>
         ) : (
-          <Login setApiKey={setApiKey} setUser={setUser}></Login>
+          <Login
+            setLoggedIn={setLoggedIn}
+            setApiKey={setApiKey}
+            setUser={setUser}
+          ></Login>
         )}
       </main>
     </div>
