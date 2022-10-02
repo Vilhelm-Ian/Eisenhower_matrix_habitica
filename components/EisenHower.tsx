@@ -38,10 +38,9 @@ export default function EisenHower(props: Props) {
 				},
 			});
 			let data = await res.json();
-			console.log(data)
 			let tags = data.data.tags;
-			let important = tags.filter((tag: any) => tag.name == "important");
-			let urgent = tags.filter((tag: any) => tag.name == "urgent");
+			let important = tags.filter((tag: any) => tag.name.toLowerCase() == "important");
+			let urgent = tags.filter((tag: any) => tag.name.toLowerCase() == "urgent");
 			return { important: important[0].id, urgent: urgent[0].id };
 		} catch (err) {
 			console.log(err);
@@ -81,7 +80,7 @@ export default function EisenHower(props: Props) {
 	async function generateMatrix() {
 		try {
 			let data = await getTasks();
-			let dailyTasks = data.data.filter((task: any) => task.type == "daily" || task.type == "todo");
+			let dailyTasks = data.data.filter((task: any) => task.type == "daily" || ( task.type == "todo" ) );
 			let tags: Tags | undefined = await getTags(props.apiKey, props.user);
 			if (tags === undefined) throw "can't generate matrix, couldn't find tags";
 			let squares = {
