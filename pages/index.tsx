@@ -44,7 +44,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Habit Matrix</title>
+        <title>EisenHower</title>
         <meta name="description" content="Habitica EisenHower Matrix" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
