@@ -43,14 +43,14 @@ export default function Login(props: Props) {
 
 	return (
 		<div className="login-form">
-			<h1>LOGIN</h1>
+			<h1>Habit Matrix</h1>
 			<input
-				placeholder="Api Key"
+				placeholder="Api Token"
 				name="apiKey"
 				onChange={(e) => update(e.target.value, setApiKey)}
 			></input>
 			<input
-				placeholder="User"
+				placeholder="User ID"
 				name="update"
 				onChange={(e) => update(e.target.value, setUser)}
 			></input>
