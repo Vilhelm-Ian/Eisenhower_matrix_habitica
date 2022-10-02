@@ -113,25 +113,25 @@ export default function EisenHower(props: Props) {
 	return (
 		<div className="grid">
 			<div className="do">
-				<div className="action do ">
+				<div className="action">
 					<h2>Do</h2>
 				</div>
 				<ul>{_do}</ul>
 			</div>
 			<div className="schedule">
-				<div className="action schedule">
+				<div className="action">
 					<h2>Schedule</h2>
 				</div>
 				<ul>{schedule}</ul>
 			</div>
-			<div className="deligate">
-				<div className="action deligate">
-					<h2>deligate</h2>
+			<div className="delegate">
+				<div className="action">
+					<h2>delegate</h2>
 				</div>
 				<ul>{deligate}</ul>
 			</div>
 			<div className="delete">
-				<div className="action delete">
+				<div className="action">
 					<h2>delete</h2>
 				</div>
 				<ul>{_delete}</ul>
