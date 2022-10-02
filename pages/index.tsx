@@ -33,7 +33,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (isLoggedIn) return;
     let [api, user] = getCookies();
-    console.log("index.tsx");
     setApiKey(api);
     setUser(user);
     if (!isLoggedIn && api && user) {
