@@ -19,7 +19,7 @@ const project_name = "EisenHower";
 
 export default function EisenHower(props: Props) {
 	let [_do, setDo] = useState([""]);
-	let [schedule, setSchedule] = useState([""]);
+	let [defer, setdefer] = useState([""]);
 	let [delegate, setDelegate] = useState([""]);
 	let [_delete, setDelete] = useState([""]);
 
@@ -72,7 +72,7 @@ export default function EisenHower(props: Props) {
 		let isImporant = task.tags.includes(tags?.important);
 		let isUrgent = task.tags.includes(tags?.urgent);
 		if (isImporant && isUrgent) return squares._do.push(task);
-		if (isImporant) return squares.schedule.push(task);
+		if (isImporant) return squares.defer.push(task);
 		if (isUrgent) return squares.delegate.push(task);
 		squares._delete.push(task);
 	}
@@ -85,7 +85,7 @@ export default function EisenHower(props: Props) {
 			if (tags === undefined) throw "can't generate matrix, couldn't find tags";
 			let squares = {
 				_do: [],
-				schedule: [],
+				defer: [],
 				delegate: [],
 				_delete: [],
 			};
@@ -104,7 +104,7 @@ export default function EisenHower(props: Props) {
 		generateMatrix()
 			.then((squares) => {
 				setDo(put_task_tex_in_ul(squares?._do));
-				setSchedule(put_task_tex_in_ul(squares?.schedule));
+				setdefer(put_task_tex_in_ul(squares?.defer));
 				setDelegate(put_task_tex_in_ul(squares?.delegate));
 				setDelete(put_task_tex_in_ul(squares?._delete));
 			})
@@ -120,12 +120,12 @@ export default function EisenHower(props: Props) {
 				</div>
 				<ul>{_do}</ul>
 			</div>
-			<div className="schedule">
+			<div className="defer">
 				<div className="action">
-					<div className="task-count">{schedule.length}</div>
-					<h2>Schedule</h2>
+					<div className="task-count">{defer.length}</div>
+					<h2>defer</h2>
 				</div>
-				<ul>{schedule}</ul>
+				<ul>{defer}</ul>
 			</div>
 			<div className="delegate">
 				<div className="action">

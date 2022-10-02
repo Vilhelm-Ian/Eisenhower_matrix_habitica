@@ -43,7 +43,7 @@ export default function Login(props: Props) {
 
 	return (
 		<div className="login-form">
-			<h1>Habit Matrix</h1>
+			<h1>{project_name}</h1>
 			<input
 				placeholder="User ID"
 				name="update"
@@ -54,6 +54,7 @@ export default function Login(props: Props) {
 				name="apiKey"
 				onChange={(e) => update(e.target.value, setApiKey)}
 			></input>
+			<small>Visit <a href="">here</a> to quickly grab your API details.</small>
 			<button onClick={login}>Login</button>
 		</div>
 	);
