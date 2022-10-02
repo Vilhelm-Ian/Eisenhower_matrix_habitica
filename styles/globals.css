@@ -6,6 +6,7 @@
 
 html,
 body {
+	height: 100vh;
 	margin: 0;
 	font-family: sans-serif;
 	background-image: linear-gradient(to bottom right, #8E2DE2, var(--habitica-purple));
@@ -16,7 +17,6 @@ body {
 	color: var(--background-light);
 	grid-template-columns: 1fr 1fr;
 	grid-auto-rows: 1fr;
-	height: 97vh;
 	position: relative;
 }
 
@@ -59,7 +59,7 @@ body {
 }
 main {
 	position: relative;
-	height: 90vh;
+	height: 100vh;
 }
 .grid > * {
 	overflow: auto;
@@ -112,12 +112,10 @@ ul {
 }
 
 li {
-	padding: 0.5rem 2rem;
+	padding: 0.35rem 2rem;
 }
 
 li:hover {
-	border: 1px solid var(--background-dark);
-	border-radius: 1rem;
 	cursor: pointer;
 
 }
