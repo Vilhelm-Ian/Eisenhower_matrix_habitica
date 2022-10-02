@@ -1,3 +1,16 @@
+# Changes
+- [x] Login Page
+- [-] Main Light Mode
+- [ ] Dark Mode
+- [ ] Check off task in Habitica
+- [ ] habitica notification when checked off
+- [ ] Pomoduro Timer
+- [ ] Connect Pomoduro Timer to Habitica Habit
+- [ ] Pomoduro Stats
+
+![Main Light](main_lightmode.png)
+![Main Dark](main_darkmode.png)
+
 # About
 - It's an implementation of the Eisenhower Matrix in next.js using the habitica api. The Eisenhower Matrix is an algorthim for organizing.
 	- If an activity is urgent and important, it should be done immediately. 
