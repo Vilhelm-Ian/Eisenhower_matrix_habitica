@@ -4,6 +4,11 @@
 	--background-dark: #333;
 }
 
+* {
+	box-sizing: border-box;
+	transition: all 0.5s ease-in-out;
+}
+
 html,
 body {
 	height: 100vh;
@@ -18,7 +23,7 @@ body {
 	grid-template-columns: 1fr 1fr;
 	grid-auto-rows: 1fr;
 	position: relative;
-	height: 97%;
+	height: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -81,11 +86,13 @@ main {
 	padding: 5%;
 	position: sticky;
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
 
 .task-count {
 	width: 50px;
+	height: 50px;
 	font-size: 0.8rem;
 	border-radius: 1rem;
 	display: grid;
@@ -95,6 +102,8 @@ main {
 h2 {
 	float: right;
 	text-transform: capitalize;
+	opacity: 0.5;
+	font-size: x-large;
 }
 
 .grid > div  {
@@ -126,12 +135,13 @@ ul {
 }
 
 li {
-	padding: 0.35rem 0.5rem;
+	padding: 0.35rem 2rem;
+	font-size: 0.9rem;
 }
 
 li:hover {
 	cursor: pointer;
-
+	text-decoration: line-through;
 }
 
 .login-form {
