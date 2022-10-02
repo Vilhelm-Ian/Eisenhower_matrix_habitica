@@ -170,6 +170,15 @@ li:hover {
 	text-decoration: line-through;
 }
 
+small {
+	font-size: 0.7rem;
+}
+
+small a {
+	text-decoration: none;
+	color: var(--habitica-purple);
+}
+
 .login-form {
 	display: flex;
 	flex-direction: column;

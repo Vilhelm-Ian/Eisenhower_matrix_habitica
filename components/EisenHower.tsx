@@ -11,7 +11,7 @@ interface Tags {
 }
 
 function put_task_tex_in_ul(tasks: any): string[] {
-	return tasks?.map((task: any) => <li key={task.text}>{task.text}</li>);
+	return tasks?.map((task: any) => <li key={task.id}>{task.text}</li>);
 }
 
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
