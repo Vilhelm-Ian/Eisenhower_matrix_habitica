@@ -112,7 +112,7 @@ export default function EisenHower(props: Props) {
 				switch (res.status) {
 					case 200:
 						console.log("success");
-						setState((tasks) => tasks.filter((task) => task.id !== id));
+						setState((tasks: any[]) => tasks.filter((task) => task.id !== id));
 						break;
 					case 404:
 						console.log("task not found");
