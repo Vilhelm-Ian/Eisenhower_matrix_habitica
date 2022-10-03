@@ -11,7 +11,7 @@ interface Tags {
 }
 
 function put_task_tex_in_ul(tasks: any): string[] {
-	return tasks?.map((task: any) => <li key={task.text}>{task.text}</li>);
+	return tasks?.map((task: any) => <li key={task.id}>{task.text}</li>);
 }
 
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
@@ -19,8 +19,8 @@ const project_name = "EisenHower";
 
 export default function EisenHower(props: Props) {
 	let [_do, setDo] = useState([""]);
-	let [schedule, setSchedule] = useState([""]);
-	let [deligate, setDeligate] = useState([""]);
+	let [defer, setdefer] = useState([""]);
+	let [delegate, setDelegate] = useState([""]);
 	let [_delete, setDelete] = useState([""]);
 
 	async function getTags(
@@ -39,8 +39,8 @@ export default function EisenHower(props: Props) {
 			});
 			let data = await res.json();
 			let tags = data.data.tags;
-			let important = tags.filter((tag: any) => tag.name == "important");
-			let urgent = tags.filter((tag: any) => tag.name == "urgent");
+			let important = tags.filter((tag: any) => tag.name.toLowerCase() == "important");
+			let urgent = tags.filter((tag: any) => tag.name.toLowerCase() == "urgent");
 			return { important: important[0].id, urgent: urgent[0].id };
 		} catch (err) {
 			console.log(err);
@@ -72,25 +72,26 @@ export default function EisenHower(props: Props) {
 		let isImporant = task.tags.includes(tags?.important);
 		let isUrgent = task.tags.includes(tags?.urgent);
 		if (isImporant && isUrgent) return squares._do.push(task);
-		if (isImporant) return squares.schedule.push(task);
-		if (isUrgent) return squares.deligate.push(task);
+		if (isImporant) return squares.defer.push(task);
+		if (isUrgent) return squares.delegate.push(task);
 		squares._delete.push(task);
 	}
 
 	async function generateMatrix() {
 		try {
 			let data = await getTasks();
+			let dailyTasks = data.data.filter((task: any) => task.type == "daily" || ( task.type == "todo" ) );
 			let tags: Tags | undefined = await getTags(props.apiKey, props.user);
 			if (tags === undefined) throw "can't generate matrix, couldn't find tags";
 			let squares = {
 				_do: [],
-				schedule: [],
-				deligate: [],
+				defer: [],
+				delegate: [],
 				_delete: [],
 			};
-			for (let i = 0; i < data.data.length; i++) {
-				if (data.data[i].completed) continue;
-				place_task_in_appropriate_square(squares, data.data[i], tags);
+			for (let i = 0; i < dailyTasks.length; i++) {
+				if (dailyTasks[i].completed) continue;
+				place_task_in_appropriate_square(squares, dailyTasks[i], tags);
 			}
 			return squares;
 		} catch (err) {
@@ -103,8 +104,8 @@ export default function EisenHower(props: Props) {
 		generateMatrix()
 			.then((squares) => {
 				setDo(put_task_tex_in_ul(squares?._do));
-				setSchedule(put_task_tex_in_ul(squares?.schedule));
-				setDeligate(put_task_tex_in_ul(squares?.deligate));
+				setdefer(put_task_tex_in_ul(squares?.defer));
+				setDelegate(put_task_tex_in_ul(squares?.delegate));
 				setDelete(put_task_tex_in_ul(squares?._delete));
 			})
 			.catch((err) => console.log(err));
@@ -113,25 +114,29 @@ export default function EisenHower(props: Props) {
 	return (
 		<div className="grid">
 			<div className="do">
-				<div className="action do ">
+				<div className="action">
+					<div className="task-count">{_do.length}</div>
 					<h2>Do</h2>
 				</div>
 				<ul>{_do}</ul>
 			</div>
-			<div className="schedule">
-				<div className="action schedule">
-					<h2>Schedule</h2>
+			<div className="defer">
+				<div className="action">
+					<div className="task-count">{defer.length}</div>
+					<h2>defer</h2>
 				</div>
-				<ul>{schedule}</ul>
+				<ul>{defer}</ul>
 			</div>
-			<div className="deligate">
-				<div className="action deligate">
-					<h2>deligate</h2>
+			<div className="delegate">
+				<div className="action">
+					<div className="task-count">{delegate.length}</div>
+					<h2>delegate</h2>
 				</div>
-				<ul>{deligate}</ul>
+				<ul>{delegate}</ul>
 			</div>
 			<div className="delete">
-				<div className="action delete">
+				<div className="action">
+					<div className="task-count">{_delete.length}</div>
 					<h2>delete</h2>
 				</div>
 				<ul>{_delete}</ul>

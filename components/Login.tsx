@@ -43,17 +43,18 @@ export default function Login(props: Props) {
 
 	return (
 		<div className="login-form">
-			<h1>LOGIN</h1>
+			<h1>{project_name}</h1>
 			<input
-				placeholder="Api Key"
-				name="apiKey"
-				onChange={(e) => update(e.target.value, setApiKey)}
-			></input>
-			<input
-				placeholder="User"
+				placeholder="User ID"
 				name="update"
 				onChange={(e) => update(e.target.value, setUser)}
 			></input>
+			<input
+				placeholder="Api Token"
+				name="apiKey"
+				onChange={(e) => update(e.target.value, setApiKey)}
+			></input>
+			<small>Visit <a href="https://habitica.com/user/settings/api">here</a> to quickly grab your API details.</small>
 			<button onClick={login}>Login</button>
 		</div>
 	);
