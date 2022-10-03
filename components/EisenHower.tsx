@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
+const project_name = "EisenHower";
+
 interface Props {
 	apiKey: string;
 	user: string;
@@ -10,16 +13,9 @@ interface Tags {
 	urgent: string;
 }
 
-function put_task_tex_in_ul(tasks: any): string[] {
-	return tasks?.map((task: any) => <li key={task.id}>{task.text}</li>);
-}
-
-const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
-const project_name = "EisenHower";
-
 export default function EisenHower(props: Props) {
 	let [_do, setDo] = useState([""]);
-	let [defer, setdefer] = useState([""]);
+	let [defer, setDefer] = useState([""]);
 	let [delegate, setDelegate] = useState([""]);
 	let [_delete, setDelete] = useState([""]);
 
@@ -39,8 +35,12 @@ export default function EisenHower(props: Props) {
 			});
 			let data = await res.json();
 			let tags = data.data.tags;
-			let important = tags.filter((tag: any) => tag.name.toLowerCase() == "important");
-			let urgent = tags.filter((tag: any) => tag.name.toLowerCase() == "urgent");
+			let important = tags.filter(
+				(tag: any) => tag.name.toLowerCase() == "important"
+			);
+			let urgent = tags.filter(
+				(tag: any) => tag.name.toLowerCase() == "urgent"
+			);
 			return { important: important[0].id, urgent: urgent[0].id };
 		} catch (err) {
 			console.log(err);
@@ -77,10 +77,11 @@ export default function EisenHower(props: Props) {
 		squares._delete.push(task);
 	}
 
-	async function generateMatrix() {
+	async function generateMatrix(data: any) {
 		try {
-			let data = await getTasks();
-			let dailyTasks = data.data.filter((task: any) => task.type == "daily" || ( task.type == "todo" ) );
+			let dailyTasks = data.data.filter(
+				(task: any) => task.type == "daily" || task.type == "todo"
+			);
 			let tags: Tags | undefined = await getTags(props.apiKey, props.user);
 			if (tags === undefined) throw "can't generate matrix, couldn't find tags";
 			let squares = {
@@ -99,16 +100,54 @@ export default function EisenHower(props: Props) {
 		}
 	}
 
+	function checkOff(id: string, setState: any) {
+		fetch(`https://habitica.com/api/v3/tasks/${id}/score/up`, {
+			method: "POST",
+			headers: {
+				"x-api-key": props.apiKey,
+				"x-api-user": props.user,
+			},
+		})
+			.then((res) => {
+				switch (res.status) {
+					case 200:
+						console.log("success");
+						setState((tasks) => tasks.filter((task) => task.id !== id));
+						break;
+					case 404:
+						console.log("task not found");
+						break;
+					case 202:
+						alert("approval was requested for team task");
+						break;
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function put_task_text_in_ul(tasks: any, callBack: any): string[] {
+		return tasks?.map((task: any) => (
+			<li key={task.id}>
+				<input
+					onChange={() => checkOff(task.id, callBack)}
+					type="checkbox"
+				></input>
+				<label>{task.text}</label>
+			</li>
+		));
+	}
 	useEffect(() => {
 		console.log("we are loading");
-		generateMatrix()
-			.then((squares) => {
-				setDo(put_task_tex_in_ul(squares?._do));
-				setdefer(put_task_tex_in_ul(squares?.defer));
-				setDelegate(put_task_tex_in_ul(squares?.delegate));
-				setDelete(put_task_tex_in_ul(squares?._delete));
-			})
-			.catch((err) => console.log(err));
+		(async function () {
+			let data = await getTasks();
+			let squares = await generateMatrix(data);
+			setDo(squares?._do || []);
+			setDefer(squares?.defer || []);
+			setDelegate(squares?.delegate || []);
+			setDelete(squares?._delete || []);
+		})();
 	}, []);
 
 	return (
@@ -118,28 +157,28 @@ export default function EisenHower(props: Props) {
 					<div className="task-count">{_do.length}</div>
 					<h2>Do</h2>
 				</div>
-				<ul>{_do}</ul>
+				<ul>{put_task_text_in_ul(_do, setDo)}</ul>
 			</div>
 			<div className="defer">
 				<div className="action">
 					<div className="task-count">{defer.length}</div>
 					<h2>defer</h2>
 				</div>
-				<ul>{defer}</ul>
+				<ul>{put_task_text_in_ul(defer, setDefer)}</ul>
 			</div>
 			<div className="delegate">
 				<div className="action">
 					<div className="task-count">{delegate.length}</div>
 					<h2>delegate</h2>
 				</div>
-				<ul>{delegate}</ul>
+				<ul>{put_task_text_in_ul(delegate, setDelegate)}</ul>
 			</div>
 			<div className="delete">
 				<div className="action">
 					<div className="task-count">{_delete.length}</div>
 					<h2>delete</h2>
 				</div>
-				<ul>{_delete}</ul>
+				<ul>{put_task_text_in_ul(_delete, setDelete)}</ul>
 			</div>
 		</div>
 	);
