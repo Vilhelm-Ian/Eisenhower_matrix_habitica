@@ -2,7 +2,7 @@
 - [x] Login Page
 - [-] Main Light Mode
 - [ ] Dark Mode
-- [ ] Check off task in Habitica
+- [x] Check off task in Habitica
 - [ ] habitica notification when checked off
 - [ ] Pomoduro Timer
 - [ ] Connect Pomoduro Timer to Habitica Habit
