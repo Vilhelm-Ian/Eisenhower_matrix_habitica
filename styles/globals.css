@@ -14,7 +14,11 @@ body {
 	height: 100vh;
 	margin: 0;
 	font-family: sans-serif;
-	background-image: linear-gradient(to bottom right, #8E2DE2, var(--habitica-purple));
+	background-image: linear-gradient(
+		to bottom right,
+		#8e2de2,
+		var(--habitica-purple)
+	);
 }
 .grid {
 	padding: 1rem;
@@ -29,15 +33,24 @@ body {
 @media (prefers-color-scheme: dark) {
 	html,
 	body {
-		background-image: linear-gradient(to bottom right, var(--background-dark), var(--habitica-purple));
+		background-image: linear-gradient(
+			to bottom right,
+			var(--background-dark),
+			var(--habitica-purple)
+		);
 	}
 
 	.grid {
 		background: var(--background-dark);
 	}
 
-	.do, .delegate, .defer, .delete {
-		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset, rgba(0, 0, 0, 0.2) 0px -3px 0px;
+	.do,
+	.delegate,
+	.defer,
+	.delete {
+		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset,
+			rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset,
+			rgba(0, 0, 0, 0.2) 0px -3px 0px;
 		color: var(--background-dark);
 	}
 
@@ -55,7 +68,7 @@ body {
 	}
 
 	.action {
-		color: var(--background-light)
+		color: var(--background-light);
 	}
 
 	li {
@@ -65,27 +78,37 @@ body {
 	.task-count {
 		color: var(--background-light);
 		background: var(--background-dark);
-		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset, rgba(0, 0, 0, 0.2) 0px -3px 0px;
+		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset,
+			rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset,
+			rgba(0, 0, 0, 0.2) 0px -3px 0px;
 	}
-
 }
 @media (prefers-color-scheme: light) {
 	html,
 	body {
-		background-image: linear-gradient(to bottom right, var(--background-light), var(--habitica-purple));
+		background-image: linear-gradient(
+			to bottom right,
+			var(--background-light),
+			var(--habitica-purple)
+		);
 	}
 
 	.grid {
 		background: var(--background-light);
 	}
 
-	.do, .delegate, .defer, .delete {
-		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset, rgba(0, 0, 0, 0.2) 0px -3px 0px;
+	.do,
+	.delegate,
+	.defer,
+	.delete {
+		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset,
+			rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset,
+			rgba(0, 0, 0, 0.2) 0px -3px 0px;
 		color: var(--background-dark);
 	}
 
 	.do {
-		background: #EEFFE0;
+		background: #eeffe0;
 	}
 	.defer {
 		background: #fff4e0;
@@ -108,7 +131,9 @@ body {
 	.task-count {
 		color: var(--background-dark);
 		background-color: var(--background-light);
-		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset, rgba(0, 0, 0, 0.2) 0px -3px 0px;
+		box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px inset,
+			rgba(0, 0, 0, 0.3) 0px 7px 13px -3px inset,
+			rgba(0, 0, 0, 0.2) 0px -3px 0px;
 	}
 }
 main {
@@ -144,7 +169,7 @@ h2 {
 	font-size: x-large;
 }
 
-.grid > div  {
+.grid > div {
 	display: inline-block;
 	border-radius: 1rem;
 	margin: 0.5rem;
@@ -203,7 +228,8 @@ input {
 	margin-bottom: 1.5rem;
 }
 
-input:focus, input:active {
+input:focus,
+input:active {
 	outline: none;
 	border-bottom: solid 0.1rem purple;
 }
@@ -222,7 +248,11 @@ button {
 	width: 33%;
 	left: 33%;
 	border-radius: 50px;
-	background-image: linear-gradient(to bottom right, var(--habitica-purple), pink);
+	background-image: linear-gradient(
+		to bottom right,
+		var(--habitica-purple),
+		pink
+	);
 	border: none;
 	font-size: 1rem;
 	margin-top: 2rem;
@@ -261,4 +291,3 @@ button:hover {
 		padding: 0.5rem 1rem;
 	}
 }
-

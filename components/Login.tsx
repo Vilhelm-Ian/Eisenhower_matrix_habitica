@@ -6,12 +6,12 @@ interface Props {
 	setLoggedIn(loggedin: boolean): void;
 }
 
-const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const project_name = "EisenHower";
 
 export default function Login(props: Props) {
-	let [apiKey, setApiKey] = useState("");
-	let [user, setUser] = useState("");
+	let [username, setUsername] = useState("");
+	let [password, setPassword] = useState("");
+	let [is_wrong_attempt, setWrongAttempt] = useState(false);
 
 	function update(text: string, callback: Function) {
 		callback(text);
@@ -20,22 +20,30 @@ export default function Login(props: Props) {
 	async function login(e: any) {
 		e.preventDefault();
 		try {
-			let res = await fetch("https://habitica.com/api/v3/tasks/user", {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					"x-api-key": apiKey,
-					"x-api-user": user,
-					"x-client": creator + "-" + project_name,
-				},
-			});
-			let data = await res.json();
-			if (!data.success) return;
-			document.cookie = `api=${apiKey};`;
-			document.cookie = `user=${user};`;
-			props.setUser(user);
-			props.setApiKey(apiKey);
-			props.setLoggedIn(true);
+			let res = await fetch(
+				"https://habitica.com/api/v3/user/auth/local/login",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						username,
+						password,
+					}),
+				}
+			);
+			if (res.status === 200) {
+				let data = await res.json();
+				console.log(data);
+				document.cookie = `api=${data.data.apiToken};`;
+				document.cookie = `user=${data.data.id};`;
+				props.setUser(data.data.id);
+				props.setApiKey(data.data.apiToken);
+				props.setLoggedIn(true);
+			} else {
+				setWrongAttempt(true);
+			}
 		} catch (err) {
 			console.log(err + "logging in");
 		}
@@ -45,16 +53,17 @@ export default function Login(props: Props) {
 		<div className="login-form">
 			<h1>{project_name}</h1>
 			<input
-				placeholder="User ID"
-				name="update"
-				onChange={(e) => update(e.target.value, setUser)}
+				placeholder="Username"
+				name="username"
+				onChange={(e) => update(e.target.value, setUsername)}
 			></input>
 			<input
-				placeholder="Api Token"
-				name="apiKey"
-				onChange={(e) => update(e.target.value, setApiKey)}
+				type="password"
+				placeholder="Password"
+				name="password"
+				onChange={(e) => update(e.target.value, setPassword)}
 			></input>
-			<small>Visit <a href="https://habitica.com/user/settings/api">here</a> to quickly grab your API details.</small>
+			{is_wrong_attempt ? <p>wrong password or username</p> : <></>}
 			<button onClick={login}>Login</button>
 		</div>
 	);
