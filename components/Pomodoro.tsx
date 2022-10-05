@@ -1,7 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import styles from "../styles/Pomodoro.module.css";
 
-export default function Pomodoro(props) {
+interface Props {
+  stopPomodoro: () => void;
+}
+
+export default function Pomodoro(props: Props) {
   const [seconds, setSeconds] = useState(0);
   const [miliseconds, setMiliSeconds] = useState(0);
   const [timeLimit, setTimeLimit] = useState(25);
