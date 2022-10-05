@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Pomodoro from "./Pomodoro";
 
 const creator = "a80214a4-2868-4f11-aa34-bb6327c57b9c";
 const project_name = "EisenHower";
@@ -18,6 +19,7 @@ export default function EisenHower(props: Props) {
 	let [defer, setDefer] = useState([""]);
 	let [delegate, setDelegate] = useState([""]);
 	let [_delete, setDelete] = useState([""]);
+	let [pomodoro, setPomodoro] = useState("");
 
 	async function getTags(
 		apiKey: string,
@@ -135,6 +137,17 @@ export default function EisenHower(props: Props) {
 					type="checkbox"
 				></input>
 				<label>{task.text}</label>
+				<button onClick={() => setPomodoro(task.id)}>🍅</button>
+				{pomodoro === task.id ? (
+					<Pomodoro
+						stopPomodoro={() => {
+							setPomodoro("");
+							checkOff(task.id, callBack);
+						}}
+					/>
+				) : (
+					<></>
+				)}
 			</li>
 		));
 	}

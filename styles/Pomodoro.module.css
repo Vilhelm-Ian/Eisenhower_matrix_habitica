@@ -1,0 +1,55 @@
+.container {
+  position: absolute;
+  z-index: 1;
+  width: 40vw;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.outer-circle {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 90%;
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 0.5rem white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inner-circle {
+  width: 95%;
+  z-index: 1;
+  background: gray;
+  border-radius: 50vw;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: red;
+}
+
+.time {
+  font-size: clamp(5rem, 20vw, 10rem);
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+}
+
+.button {
+  margin: 0;
+  width: 33%;
+}
