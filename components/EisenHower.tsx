@@ -51,7 +51,7 @@ export default function EisenHower(props: Props) {
 
 	async function getTasks() {
 		try {
-			let res = await fetch("https://habitica.com/api/v3/tasks/user", {
+			let res = await fetch("https://habitica.com/api/v3/tasks/user?dueDate", {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function EisenHower(props: Props) {
 				_delete: [],
 			};
 			for (let i = 0; i < dailyTasks.length; i++) {
-				if (dailyTasks[i].completed) continue;
+				if (dailyTasks[i].completed || dailyTasks[i].isDue === false) continue;
 				place_task_in_appropriate_square(squares, dailyTasks[i], tags);
 			}
 			return squares;
